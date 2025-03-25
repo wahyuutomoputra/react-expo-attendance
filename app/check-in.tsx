@@ -59,7 +59,19 @@ export default function CheckInScreen() {
       let location = null;
 
       if (locationPermission?.granted) {
-        location = await Location.getCurrentPositionAsync({});
+        location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.High
+        });
+
+        // Check if location is mocked
+        if (location.mocked) {
+          Alert.alert(
+            'Fake GPS Terdeteksi',
+            'Mohon nonaktifkan aplikasi Fake GPS untuk melakukan check in.',
+            [{ text: 'OK' }]
+          );
+          return;
+        }
       }
 
       const checkInData: CheckInData = {
